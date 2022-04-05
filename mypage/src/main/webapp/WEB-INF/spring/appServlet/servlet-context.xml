@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans
+	xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd"> <!-- DispatcherServlet Context: defines this servlet's request-processing 
+		infrastructure --> <!-- Enables the Spring MVC @Controller programming model -->
+
+	<annotation-driven />
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving 
+		up static resources in the ${webappRoot}/resources directory -->
+
+	<context:component-scan
+		base-package="com.cameldev.mypage" />
+	<resources mapping="/resources/**" location="/resources/" />
+	<resources mapping="/plugins/**"
+		location="/resources/plugins/" />
+	<resources mapping="/dist/**" location="/resources/dist/" />
+
+	<!-- Resolves views selected for rendering by @Controllers to .jsp resources 
+		in the /WEB-INF/views directory -->
+	<beans:bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/WEB-INF/views/" />
+		<beans:property name="suffix" value=".jsp" />
+		<beans:property name="contentType"
+			value="text/html; charset=UTF-8" />
+	</beans:bean>
+
+	<beans:bean id="loginInterceptor"
+		class="com.cameldev.mypage.commons.interceptor.LoginInterceptor" />
+
+	<interceptors>
+		<interceptor>
+			<mapping path="/user/loginPost" />
+			<beans:ref bean="loginInterceptor" />
+		</interceptor>
+	</interceptors>
+
+
+	<beans:bean id="loginInterceptor"
+		class="com.cameldev.mypage.commons.interceptor.LoginInterceptor" />
+	<beans:bean id="authInterceptor"
+		class="com.cameldev.mypage.commons.interceptor.AuthInterceptor" />
+	<beans:bean id="rememberMeInterceptor"
+		class="com.cameldev.mypage.commons.interceptor.RememberMeInterceptor" />
+	<interceptors>
+		<interceptor>
+			<mapping path="/user/loginPost" />
+			<beans:ref bean="loginInterceptor" />
+		</interceptor>
+		<interceptor>
+			<mapping path="/article/paging/search/write" />
+			<mapping path="/article/paging/search/modify" />
+			<mapping path="/article/paging/search/remove" />
+			<mapping path="/user/info" />
+			<beans:ref bean="authInterceptor" />
+		</interceptor>
+		<interceptor>
+			<mapping path="/**/" />
+			<beans:ref bean="rememberMeInterceptor" />
+		</interceptor>
+	</interceptors>
+
+	<beans:bean id="loginInterceptor"
+		class="com.cameldev.mypage.commons.interceptor.LoginInterceptor" />
+	<beans:bean id="authInterceptor"
+		class="com.cameldev.mypage.commons.interceptor.AuthInterceptor" />
+	<beans:bean id="rememberMeInterceptor"
+		class="com.cameldev.mypage.commons.interceptor.RememberMeInterceptor" />
+	<beans:bean id="loginAfterInterceptor"
+		class="com.cameldev.mypage.commons.interceptor.LoginAfterInterceptor" />
+	<interceptors>
+		<interceptor>
+			<mapping path="/user/loginPost" />
+			<beans:ref bean="loginInterceptor" />
+		</interceptor>
+		<interceptor>
+			<mapping path="/article/paging/search/write" />
+			<mapping path="/article/paging/search/modify" />
+			<mapping path="/article/paging/search/remove" />
+			<mapping path="/user/info" />
+			<beans:ref bean="authInterceptor" />
+		</interceptor>
+		<interceptor>
+			<mapping path="/**/" />
+			<beans:ref bean="rememberMeInterceptor" />
+		</interceptor>
+		<interceptor>
+			<mapping path="/user/login" />
+			<mapping path="/user/register" />
+			<beans:ref bean="loginAfterInterceptor" />
+		</interceptor>
+	</interceptors>
+
+	<!-- Spring에서는 파일 업로드를 처리하기 위해 
+	파일 업로드로 들어오는 데이터를 처리하는 객체가 필요하고, 
+	그것을 위해 servlet-context.xml 파일에 아래의 내용을 추가해주겠습니다. -->
+	<beans:bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<beans:property name="maxUploadSize" value="10485760" />
+	</beans:bean>
+
+
+
+
+
+	<context:component-scan
+		base-package="com.cameldev.mypage" />
+</beans:beans>
+
+
+
+<!-- 참고 : servlet-context에서는 controller annotation만 등록하고 나머지(service, repository,component 
+	등)는 spring bean으로 등록하지 않는다. use-default-filters="false" 로 설정하면 표기되지 않은 나머지(service, 
+	repository, component 등)는 spring bean으로 등록하지 않는다는 뜻이다. -->
+
