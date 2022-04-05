@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.cameldev.mypage.mappers.article.ArticleMapper">
+
+	<insert id="create">
+		INSERT INTO tb_article(
+		article_no
+		, title
+		, content
+		, writer
+		, regdate
+		, viewcnt
+		, reply_cnt
+		, file_cnt
+		)
+		VALUES(
+		#{article_no}
+		, #{title}
+		, #{content}
+		, #{writer}
+		, #{regDate}
+		, #{viewCnt}
+		)
+	</insert>
+
+	<select id="read" resultMap="ArticleResultMap">
+		SELECT
+		article_no
+		, title
+		, content
+		, writer
+		, regdate
+		, viewcnt
+		FROM
+		tb_article
+		WHERE article_no = #{article_no}
+	</select>
+
+	<update id="update">
+		UPDATE tb_article
+		SET
+		title= #{title}
+		, content = #{content}
+		WHERE
+		article_no = #{article_no}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM tb_article
+		WHERE article_no=#{article_no}
+	</delete>
+
+	<select id="listAll" resultType="ArticleVO">
+	<![CDATA[
+		SELECT
+			article_no
+			, title
+			, writer
+			, regdate
+			, viewcnt
+		FROM tb_article
+		WHERE article_no > 0
+		ORDER By article_no DESC, regdate DESC
+	]]>
+	</select>
+	
+	<select id="listPaging" resultMap="ArticleResultMap"> 
+	<![CDATA[ 
+	SELECT 
+		article_no
+		, title
+		, content
+		, writer
+		, regdate
+		, viewcnt 
+	FROM tb_article 
+	WHERE article_no > 0 
+	ORDER BY article_no DESC, regdate DESC 
+	LIMIT #{page}, 10 ]]> 
+	</select>
+	
+	<select id="listCriteria" resultMap="ArticleResultMap">
+	SELECT
+		article_no
+		, title
+		, content
+		, writer
+		, regdate
+		, viewcnt
+	FROM
+		tb_article
+	WHERE
+		article_no > 0
+	ORDER BY article_no DESC, regdate DESC
+	LIMIT #{pageStart}, #{perPageNum}
+	
+	</select>
+
+	
+
+	<resultMap type="ArticleResultMap" id="ArticleVO">
+		<!-- PK는 id, 그 외 컬럼은 result column은 테이블에서 컬럼명, property는 모델클래스의 필드명 -->
+		<id property="article_no" column="article_no" />
+		<result column="title" property="title" />
+		<result column="content" property="content" />
+		<result column="writer" property="writer" />
+		<result column="regdate" property="regDate" />
+		<result column="viewcnt" property="viewCnt" />
+	</resultMap>
+
+</mapper>
+<!-- <select id="listAll" resultType="ArticleVO"> <![CDATA[ SELECT article_no 
+	, title , content , writer , regdate , viewcnt FROM tb_article WHERE article_no 
+	> 0 ORDER BY article_no DESC, regdate DESC ]]> </select> <select id="listPaging" 
+	resultMap="ArticleResultMap"> <![CDATA[ SELECT article_no , title , content 
+	, writer , regdate , viewcnt FROM tb_article WHERE article_no > 0 ORDER BY 
+	article_no DESC , regdate DESC LIMIT #{page}, 10 ]]> </select> //SELECT문에는 
+	조건을 걸어 쿼리하기 위해 <, >, = 등의 기호를 많이 사용하는데, 이것이 파싱 중에 태그로 인식되거나 하는 등의 문제가 생길 
+	수 있다. <select id="listCriteria" resultMap="ArticleResultMap"> <![CDATA[ SELECT 
+	article_no , title , content , writer , regdate , viewcnt FROM tb_article 
+	WHERE article_no > 0 ORDER BY article_no DESC, regdate DESC LIMIT #{pageStart}, 
+	#{perPageNum} ]]> </select> LIMIT #{pageStart}, #{perPageNum}의 의미는 pageStart+1 
+	페이지부터 perPageNum까지 <select id="countArticles" resultType="int"> <![CDATA[ 
+	SELECT COUNT(article_no) FROM tb_article WHERE article_no > 0 ]]> </select> 
+	<select id="listSearch" resultMap="ArticleResultMap"> <![CDATA[ SELECT article_no 
+	, title , content , writer , regdate , viewcnt FROM tb_article WHERE article_no 
+	> 0 ]]> <include refid="search" /> <![CDATA[ ORDER BY article_no DESC, regdate 
+	DESC LIMIT #{pageStart} , #{perPageNum} ]]> </select> 수정 <select id="listSearch" 
+	resultMap="ArticleResultMap"> <![CDATA[ SELECT article_no , title , content 
+	, writer,regdate ,viewcnt ,reply_cnt FROM tb_article WHERE article_no > 0 
+	]]> <include refid="search" /> <![CDATA[ ORDER BY article_no DESC ,regdate 
+	DESC LIMIT #{pageStart}, #{perPageNum} ]]> </select> <select id="countSearchedArticles" 
+	resultType="int"> <![CDATA[ SELECT COUNT(article_no) FROM tb_article WHERE 
+	article_no > 0 ]]> refid는 sql의 id를 가져와서 그 sql을 다시 쓸 수 있도록 해줌 <include refid="search" 
+	/> </select> https://doublesprogramming.tistory.com/202 검색 조건은 selectbox를 
+	통해 사용자가 값을 선택할 수 있도록 구현하는데 값이 가지는 의미는 아래와 같다. 검색조건 없음 : n 제목 : t 내용 : c 작성자 
+	: w 제목 or 내용 : tc 내용 or 작성자 : cw 제목 or 내용 or 작성자 : tcw 다만..., 변수 안의 모든 내용이 
+	그대로 입력되므로 보암위험이 높다는 해설이 붙어있다. 무셔!!(본격적으로 MySQL을 사용하는 프로젝트는 이번이 거의 처음이라...) 
+	차라리 몰랐으면 몰라도 일전에 읽은 해킹 보안 관련 서적에서 저 필드가 그대로 입력될 경우 어떤 식으로 해킹을 하게 되는지 알고 있는지라 
+	이걸 어떻게 해야 하고 있었는데... 다행히도 아래 덧글들을 읽어보니 concat() 함수를 사용해서 그 문제도 해결할 수 있다고 
+	한다. 이렇게 concat() 함수를 이용하면 다시 #을 사용해서 PrepareStatement의 효과를 그대로 볼 수 있기 때문에 
+	걱정이 없어진다. https://coding-factory.tistory.com/114 <sql id="search"> <if test="searchType 
+	!= null"> <if test="searchType == 't'.toString()"> AND title LIKE CONCAT('%', 
+	#{keyword}, '%') </if> <if test="searchType == 'c'.toString()"> AND content 
+	LIKE CONCAT('%', #{keyword}, '%') </if> <if test="searchType == 'w'.toString()"> 
+	AND writer LIKE CONCAT('%', #{keyword}, '%') </if> <if test="searchType == 
+	'tc'.toString()"> AND ( title LIKE CONCAT('%', #{keyword}, '%') OR content 
+	LIKE CONCAT('%', #{keyword}, '%') ) </if> <if test="searchType == 'cw'.toString()"> 
+	AND ( content LIKE CONCAT('%', #{keyword}, '%') OR writer LIKE CONCAT('%', 
+	#{keyword}, '%') ) </if> <if test="searchType == 'tcw'.toString()"> AND ( 
+	title LIKE CONCAT('%', #{keyword}, '%') OR content LIKE CONCAT('%', #{keyword}, 
+	'%') OR writer LIKE CONCAT('%', #{keyword}, '%') ) </if> </if> </sql> 추가 
+	<update id="updateReplyCnt"> UPDATE tb_article SET reply_cnt = reply_cnt 
+	+ #{amount} WHERE article_no = #{article_no} </update> 수정 resultMap을 사용할 
+	때의 주의점은 JPA, ORM은 테이블과 클래스가 1:1로 매핑이 되지만, resultMap은 select 쿼리문에 나열된 컬럼명들이 
+	resultMap안에 모두 선언되어있어야합니다. <update id="updateViewCnt"> UPDATE tb_article 
+	SET viewcnt = viewcnt + 1 WHERE article_no = #{article_no} </update> 여기서 
+	resultMap 태그의 id 값이 아까 select 태그에서 resultMap속성과 값이 같아야 한다. 그리고 내부의 result 
+	태그에, 이전 SQL문에서 가져온 필드값을 매핑해주면 StudentVO에 해당 데이터가 매핑된다. 원래는 type부분에 type="com.cameldev.mypage.domain.ArticleVO"이렇게 
+	들어가야하지만 typeAlias에서 선언한 덕분에 그냥 ArticleVO //http://www.sysout.co.kr/home/webbook/page/read/643;jsessionid=54B3D5320E73A41FC4088D5E3D322141 
+	<resultMap id="ArticleResultMap" type="ArticleVO"> <id property="article_no" 
+	column="article_no" /> <result property="title" column="title" /> <result 
+	property="content" column="content" /> <result property="writer" column="writer" 
+	/> <result property="regDate" column="regdate" /> <result property="viewCnt" 
+	column="viewcnt" /> <result property="replyCnt" column="reply_cnt" /> </resultMap> -->
+
+
+<!-- 위의 mapper파일에서 주의깊게 봐야할 부분은 resultMap 속성입니다. resultMap을 사용하는 경우는 Java 
+	객체의 변수명과 DB Column명이 다를 경우입니다. Java 객체의 변수명과 DB Column명이 일치하지 않을 경우 select 
+	쿼리의 경우 원하는 결과값을 가져올 수 없습니다. 이런 경우 SQL Aliases를 사용해서 해결가능은 하겠지만, 불일치하는 번수가 
+	많을수록 매번 SQL Aliases를 사용하기에는 번거롭지 않을 수 없습니다. 그래서 이러한 번거로움을 없애기 위해 resultMap을 
+	사용해서 Java 변수명과 DB Column명을 일치시켜주는 작업을 해주고 select 쿼리의 resultType속성 대신 resultMap 
+	속성을 사용합니다. -->
