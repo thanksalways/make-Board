@@ -14,6 +14,7 @@ import com.cameldev.mypage.domain.ArticleVO;
 
 //영구 데이터를 빼내어 객체화 시키며, 영구 저장소에 데이터를 저장, 수정, 삭제하는 계층이다. 데이터베이스나 파일에 접근하여 데이터를 CRUD하는 계층이다
 
+@Repository
 public class ArticleDAOImpl implements ArticleDAO {
 
 	static final String NAMESPACE = "com.cameldev.mypage.mappers.article.ArticleMapper";

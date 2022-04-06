@@ -2,6 +2,8 @@
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 
+<html lang="en">
+<%@ include file="../include/head.jsp"%>
 <script>
 	var result = "${msg}";
 	if (result == "regSuccess") {
@@ -12,8 +14,6 @@
 		alert("게시글 삭제가 완료되었습니다.");
 	}
 </script>
-<html lang="en">
-<%@ include file="../include/head.jsp"%>
 <body class="hold-transition sidebar-mini">
 	<div class="wrapper">
 
@@ -67,16 +67,13 @@
 								</tr>
 								<!-- Controller에서 "articles" model에 담겨진 채로 넘겨지게 됨 -->
 								<c:forEach items="${articles}" var="article">
-									<tr>
-										<td>${article.article_no}</td>
-										<td><a
-											href="${path}/article/read?article_no=${article.article_no}">${article.title}</a>
-										</td>
-										<td>${article.writer}</td>
-										<td><fmt:formatDate value="${article.regDate}"
-												pattern="yyyy-MM-dd a HH:mm" /></td>
-										<td><span class="badge bg-red">${article.viewCnt}</span></td>
-									</tr>
+								<tr>
+								<td><a href="${path}/article/read?article_no=${article.article_no}">${article.title}</a></td>
+								<td>${article.writter}</td>
+								<!-- (fmt태그)formatDate : 날자 정보를 가진 객체(Date)를 특정 형식으로 변호나하여 출력 -->
+								<td><fmt:formatDate value="${article.regDate}" pattern="yyyy-MM-dd a HH:mm"/></td>
+								<td><span class="badge bg-red"${article.viewCnt}></span></td>
+								</tr>								
 								</c:forEach>
 							</tbody>
 						</table>
@@ -92,13 +89,12 @@
 									end="${pageMaker.endPage}" var="idx">
 									<li class="page-item"
 										<c:out value="${pageMaker.criteria.page == idx ? 'class=active' : ''}"/>>
-										<a class="page-link"
-										href="${path}/article/listPaging?page=${idx}">${idx}</a>
+										<a class="page-link" href="${path}/article/listPaging?page=${idx}">${idx}</a>
 									</li>
 								</c:forEach>
 								<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
-									<li class="page-item"><a class="page-link"
-										href="${path}/article/listPaging?page=${pageMaker.endPage + 1}">다음</a></li>
+									<li class="page-item"><a class="page-link" 
+									href="${path}/article/listPaging?page=${pageMaker.endPage + 1}">다음</a></li>
 								</c:if>
 							</ul>
 						</nav>

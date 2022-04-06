@@ -2,6 +2,8 @@
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 
+<html lang="en">
+<%@ include file="../include/head.jsp"%>
 <script>
 $(document).ready(function () { 
 	var formObj = $("form[role='form']"); 
@@ -10,6 +12,7 @@ $(document).ready(function () {
 		formObj.submit(); 
 		}); 
 	$(".cancelBtn").on("click", function () { 
+		//이전페이지로
 		history.go(-1); }); 
 	$(".listBtn").on("click", function () {
 		self.location = "${path}/article/listPaging?page=${criteria.page}&perPageNum=${criteria.perPageNum}";
@@ -17,8 +20,6 @@ $(document).ready(function () {
 	});
 
 </script>
-<html lang="en">
-<%@ include file="../include/head.jsp"%>
 <body class="hold-transition sidebar-mini">
 	<div class="wrapper">
 
@@ -81,7 +82,7 @@ $(document).ready(function () {
 							</div>
 						</div>
 						<div class="card-footer">
-							<button type="button" class="btn btn-primary">
+							<button type="button" class="btn btn-primary listBtn">
 								<i class="fa fa-list"></i> 목록
 							</button>
 							<div class="float-right">

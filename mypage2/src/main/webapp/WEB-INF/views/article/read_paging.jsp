@@ -7,6 +7,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
 -->
 
 
+
+<html lang="en">
+<%@ include file="../include/head.jsp"%>
 <script>
 	$(document).ready(function() {
 		var formObj = $("form[role='form']");
@@ -27,9 +30,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 		});
 	});
 </script>
-
-<html lang="en">
-<%@ include file="../include/head.jsp"%>
 <body class="hold-transition sidebar-mini">
 	<div class="wrapper">
 
@@ -85,10 +85,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
 					</div>
 					<div class="card-footer">
 						<form role="form" method="get">
-							<input type="hidden" name="article_no"
-								value="${article.article_no}"> 
-								<input type="hidden"name="page" value="${criteria.page}"> 
-								<input type="hidden" name="perPageNum" value="${criteria.perPageNum}">
+							<input type="hidden" name="article_no" value="${article.article_no}">
+							<input type="hidden"name="page" value="${criteria.page}">
+							<input type="hidden" name="perPageNum" value="${criteria.perPageNum}">
 						</form>
 						<button type="submit" class="btn btn-primary listBtn"><i class="fa fa-list"></i> 목록</button>
 						<div class="pull-right">
@@ -96,7 +95,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 							<button type="submit" class="btn btn-danger delBtn"><i class="fa fa-trash"></i> 삭제</button>
 						</div>
 					</div>
-
 				</div>
 			</div>
 			<!-- /.content -->

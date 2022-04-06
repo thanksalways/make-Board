@@ -28,38 +28,13 @@
 			value="text/html; charset=UTF-8" />
 	</beans:bean>
 
-	<beans:bean id="loginInterceptor"
+<!-- 	<beans:bean id="loginInterceptor"
 		class="com.cameldev.mypage.commons.interceptor.LoginInterceptor" />
-
+ -->
 	<interceptors>
 		<interceptor>
 			<mapping path="/user/loginPost" />
 			<beans:ref bean="loginInterceptor" />
-		</interceptor>
-	</interceptors>
-
-
-	<beans:bean id="loginInterceptor"
-		class="com.cameldev.mypage.commons.interceptor.LoginInterceptor" />
-	<beans:bean id="authInterceptor"
-		class="com.cameldev.mypage.commons.interceptor.AuthInterceptor" />
-	<beans:bean id="rememberMeInterceptor"
-		class="com.cameldev.mypage.commons.interceptor.RememberMeInterceptor" />
-	<interceptors>
-		<interceptor>
-			<mapping path="/user/loginPost" />
-			<beans:ref bean="loginInterceptor" />
-		</interceptor>
-		<interceptor>
-			<mapping path="/article/paging/search/write" />
-			<mapping path="/article/paging/search/modify" />
-			<mapping path="/article/paging/search/remove" />
-			<mapping path="/user/info" />
-			<beans:ref bean="authInterceptor" />
-		</interceptor>
-		<interceptor>
-			<mapping path="/**/" />
-			<beans:ref bean="rememberMeInterceptor" />
 		</interceptor>
 	</interceptors>
 

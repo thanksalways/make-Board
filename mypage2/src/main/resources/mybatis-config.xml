@@ -3,5 +3,6 @@
 	<typeAliases>
 		<typeAlias type="com.cameldev.mypage.domain.ArticleVO" alias="ArticleVO" />
 		<typeAlias type="com.cameldev.mypage.domain.ReplyVO" alias="ReplyVO" />
+		<typeAlias type="com.cameldev.mypage.domain.UserVO" alias="UserVO" />
 	</typeAliases>
 </configuration>

@@ -7,7 +7,8 @@
 		article_no
 		, title
 		, content
-		, writer
+		,
+		writer
 		, regdate
 		, viewcnt
 		, reply_cnt
@@ -15,7 +16,8 @@
 		)
 		VALUES(
 		#{article_no}
-		, #{title}
+		,
+		#{title}
 		, #{content}
 		, #{writer}
 		, #{regDate}
@@ -28,7 +30,8 @@
 		article_no
 		, title
 		, content
-		, writer
+		,
+		writer
 		, regdate
 		, viewcnt
 		FROM
@@ -40,7 +43,8 @@
 		UPDATE tb_article
 		SET
 		title= #{title}
-		, content = #{content}
+		, content =
+		#{content}
 		WHERE
 		article_no = #{article_no}
 	</update>
@@ -63,7 +67,7 @@
 		ORDER By article_no DESC, regdate DESC
 	]]>
 	</select>
-	
+
 	<select id="listPaging" resultMap="ArticleResultMap"> 
 	<![CDATA[ 
 	SELECT 
@@ -76,29 +80,29 @@
 	FROM tb_article 
 	WHERE article_no > 0 
 	ORDER BY article_no DESC, regdate DESC 
-	LIMIT #{page}, 10 ]]> 
+	LIMIT #{page}, 10 ]]>
 	</select>
-	
+
 	<select id="listCriteria" resultMap="ArticleResultMap">
-	SELECT
+		SELECT
 		article_no
 		, title
 		, content
 		, writer
 		, regdate
 		, viewcnt
-	FROM
+		FROM
 		tb_article
-	WHERE
+		WHERE
 		article_no > 0
-	ORDER BY article_no DESC, regdate DESC
-	LIMIT #{pageStart}, #{perPageNum}
-	
+		ORDER BY article_no DESC, regdate DESC
+		LIMIT #{pageStart}, #{perPageNum}
+
 	</select>
 
-	
 
-	<resultMap type="ArticleResultMap" id="ArticleVO">
+
+	<resultMap id="ArticleResultMap" type="ArticleVO">
 		<!-- PK는 id, 그 외 컬럼은 result column은 테이블에서 컬럼명, property는 모델클래스의 필드명 -->
 		<id property="article_no" column="article_no" />
 		<result column="title" property="title" />

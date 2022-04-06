@@ -17,16 +17,14 @@ public class RememberMeInterceptor extends HandlerInterceptorAdapter {
 	@Inject
 	private UserService userService;
 
-	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
-			throws Exception {
-		HttpSession httpSession = request.getSession();
-		Cookie loginCookie = WebUtils.getCookie(request, "loginCookie");
-		if (loginCookie != null) {
-			UserVO userVO = userService.checkLoginBefore(loginCookie.getValue());
-			if (userVO != null)
-				httpSession.setAttribute("login", userVO);
-		}
-		return true;
-	}
+	
+	/*
+	 * @Override public boolean preHandle(HttpServletRequest request,
+	 * HttpServletResponse response, Object handler) throws Exception { HttpSession
+	 * httpSession = request.getSession(); Cookie loginCookie =
+	 * WebUtils.getCookie(request, "loginCookie"); if (loginCookie != null) { UserVO
+	 * userVO = userService.checkLoginBefore(loginCookie.getValue()); if (userVO !=
+	 * null) httpSession.setAttribute("login", userVO); } return true; }
+	 */
+	 
 }

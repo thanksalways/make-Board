@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -115,5 +116,49 @@ public class ArticleController {
 		
 		return "/article/list_paging";
 	}
+	
+//	조회
+	@RequestMapping(value = "/readPaging", method = RequestMethod.GET)
+	public String readPaging(@RequestParam("article_no") int article_no
+			/*,@ModelAttribute("criteria") Criteria criteria*/, Model model) throws Exception {		
+		logger.info("readPaging...");
+		model.addAttribute("article", articleService.read(article_no));
+		
+		return "/article/readPaging";
+	}
+//	수정
+	public String modifyGETPaging(@RequestParam("article_no") int article_no 
+	/* ,@ModelAttribute("criteria") Criteria criteria */, Model model) throws Exception {
+		logger.info("modifyGETPaging");		
+		model.addAttribute("article", articleService.read(article_no));
+		
+		return "/article/modify_paging";
+	}
+//	수정
+	@RequestMapping(value = "modifyPaging", method = RequestMethod.POST)
+	public String modifyPOSTPaging(ArticleVO articleVO, Criteria criteria,RedirectAttributes redirectAttributes/*redirect에서는 model안씀 , Model model */) throws Exception {
+		logger.info("modifyPOSTPaging...");
+		
+		articleService.update(articleVO);
+		/*
+		 * redirect에서는 아래와 같이 안쓰고
+		 * model.addAttribute("page", criteria.getPage());
+		 * model.addAttribute("perPageNum", criteria.getPerPageNum());
+		 * redirectAttributes.addAttribute를 쓴다!
+		 */
+		redirectAttributes.addAttribute("page", criteria.getPage());
+		redirectAttributes.addAttribute("perPageNum", criteria.getPerPageNum());
+		redirectAttributes.addFlashAttribute("msg","modSuccess");
+				
+		return "redirect:/article/listPaging";		
+	}
+//	삭제
+	@RequestMapping(value = "/removePaging", method = RequestMethod.POST)
+	public String removePaging(@RequestParam("article_no") int article_no, Criteria criteria, RedirectAttributes redirectAttributes) throws Exception {
+		logger.info("removePaging...");
+		articleService.delete(article_no);
+		
+		return "redirect:/article/listPaging";
+	}	
 
 }

@@ -20,7 +20,7 @@
 
 	<!-- properties 파일 로딩하기 -->
 	<!-- 이런 형태도 있음 -->
-	<!-- <context:property-placeholder location="classpath:/property/globals.properties" 
+	<!-- <context:property-pceholder location="classpath:/property/globals.properties" 
 		/> -->
 	<!-- properties 파일 로딩하기 -->
 	<!-- <util:properties id="dbprops" location="classpath:/property/globals.properties" 
